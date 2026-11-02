@@ -46,7 +46,11 @@ class PrintContext<TContext extends Context> {
       ..._packages.map((e) => Directive.import(e.import, as: e.alias)),
       ..._dependencies
           .where((element) => element != currentFile)
-          .map((e) => Directive.import(p.relative(e, from: currentPath))),
+          .map(
+            (e) => Directive.import(
+              e.startsWith('package:') ? e : p.relative(e, from: currentPath),
+            ),
+          ),
     ];
     imports.sort((e1, e2) => e1.url.compareTo(e2.url));
     return [...imports];

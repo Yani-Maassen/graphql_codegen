@@ -58,6 +58,7 @@ class GraphQLCodegenConfig {
   final bool addTypename;
   final String assetsPath;
   final List<String> scopes;
+  final List<String> externalAssets;
   final List<String> addTypenameExcludedPaths;
   final String generatedFileHeader;
   final String namingSeparator;
@@ -79,6 +80,7 @@ class GraphQLCodegenConfig {
     this.addTypename = true,
     this.assetsPath = "lib/**{.graphql,.gql,.graphqls}",
     this.scopes = const ["**{.graphql,.gql,.graphqls}"],
+    this.externalAssets = const [],
     this.addTypenameExcludedPaths = const [],
     this.generatedFileHeader = "",
     this.namingSeparator = r"$",

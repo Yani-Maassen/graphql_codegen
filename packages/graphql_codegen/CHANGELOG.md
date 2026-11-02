@@ -1,3 +1,8 @@
+## 3.0.3
+
+- `externalAssets`: GraphQL files of other packages (`package:` URIs), read with the package's own files and imported
+  by `package:` URI, e.g. a schema shared by several packages.
+
 # 3.0.2
 
 - Support interface fragment spreads on fragments on interfaces

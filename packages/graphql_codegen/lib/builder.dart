@@ -90,14 +90,30 @@ class GraphQLBuilder extends Builder {
               MapEntry(event.key, transform.transform(config, event.value)),
         )
         .toList();
+    for (final uri in config.externalAssets) {
+      final asset = AssetId.resolve(Uri.parse(uri));
+      entries.add(
+        MapEntry(
+          asset,
+          transform.transform(
+            config,
+            await parseResource.readFile(buildStep, asset),
+          ),
+        ),
+      );
+    }
+    final package = buildStep.inputId.package;
     final result = generate<AssetId>(
       buildStep.inputId,
       SchemaConfig<AssetId>(
         entries: BuiltMap.of(Map.fromEntries(entries)),
-        lookupPath: (id) => _resolveOutputDir(
-          p.dirname(id.path),
-          p.basename(id.path) + ".dart",
-        ),
+        // Another package's file is imported by `package:` URI, from where that package generates it (lib/)
+        lookupPath: (id) => id.package == package
+            ? _resolveOutputDir(
+                p.dirname(id.path),
+                p.basename(id.path) + ".dart",
+              )
+            : 'package:${id.package}/${p.relative(id.path, from: 'lib')}.dart',
       ),
       config,
     );
